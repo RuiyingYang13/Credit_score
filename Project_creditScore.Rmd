@@ -1,9 +1,166 @@
 ---
 title: "project"
 output: html_document
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(pacman)
+p_load(ggplot2,
+      cowplot,
+      stargazer,
+      moments,
+      glmnet,
+      pROC)
+
+credit <- read.csv("/Users/yangruiying/Desktop/r_wiederholen/credit_scoring.csv", header = T, sep = ",")
+
+str(credit)
+colSums(is.na(credit))
+colSums(credit == "-999")
+colSums(credit == "")
+```
+
+```{r}
+
+for (var in c("ext_source_3", "car_age", "days_last_phone_change", "occup_type")) {
+  credit[[var]][credit[[var]] == "-999" | credit[[var]] == ""] <- NA
+  print(table(is.na(credit[[var]])))
+}
+```
+
+```{r}
+credit <- credit[!(is.na(credit$ext_source_3)),]
+# credit$ext_source_3[is.na(credit$ext_source_3)] <- median(credit$ext_source_3, na.rm = T)
+
+credit$days_last_phone_change[is.na(credit$days_last_phone_change)] <- median(credit$days_last_phone_change, na.rm = T)
+credit$years_last_phone_change <- round((-(credit$days_last_phone_change)) / 365)
+stargazer(credit[, c("days_last_phone_change", "years_last_phone_change")], type = "text")
+
+class(credit$occup_type)
+levels(credit$occup_type) <- c(levels(credit$occup_type), "Unknown")
+credit$occup_type[is.na(credit$occup_type)] <- "Unknown"
+credit$occup_type <- factor(credit$occup_type)
+# credit$occup_type[is.na(credit$occup_type)] <- names(sort(table(credit$occup_type), decreasing = T)[1])
+
+credit$age_years <- round((-(credit$age_days)) / 365)
+
+colSums(is.na(credit))
+``` 
+
+```{r}
+table(credit$target)
+table(credit$gender)
+table(credit$own_car)
+table(credit$own_realty)
+table(credit$income_type)
+table(credit$educ_type)
+table(credit$family_status)
+table(credit$housing_type)
+table(credit$occup_type)
+# for sparse categorical values
+```
+
+```{r}
+str(credit)
+zScore <- function(var){
+  me <- mean(var, na.rm = T)
+  sd <- sd(var, na.rm = T)
+  score <- (var - me) / sd
+  return(score)
+}
+
+```
+cnt_kids
+income_total
+amt_credit
+ext_source_3
+years_last_phone_change
+age_years 
+```{r}
+ggplot(credit, aes(cnt_kids)) +
+  geom_density()
+
+x.cnt_kids <- zScore(credit$cnt_kids)
+credit$cnt_kids[x.cnt_kids > 5]
+credit$cnt_kids[x.cnt_kids > 5] <- round(mean(credit$cnt_kids, na.rm = T)) + 5*sd(credit$cnt_kids)
+
+```
+```{r}
+ggplot(credit, aes(income_total)) +
+  geom_density()
+
+x.income_total <- zScore(credit$income_total)
+credit$income_total[x.income_total > 19]
+credit$income_total[x.income_total > 19] <- round(mean(credit$income_total, na.rm = T)) + 19*sd(credit$income_total)
+
+credit$income_total_ln <- log(credit$income_total + 1)
+ggplot(credit, aes(income_total_ln)) +
+  geom_density()
+
+```
+```{r}
+ggplot(credit, aes(amt_credit)) +
+  geom_density()
+
+x.amt_credit <- zScore(credit$amt_credit)
+credit$amt_credit[x.amt_credit > 6]
+credit$amt_credit[x.amt_credit > 6] <- round(mean(credit$amt_credit, na.rm = T)) + 6*sd(credit$amt_credit)
+
+credit$amt_credit_ln <- log(credit$amt_credit + 1)
+ggplot(credit, aes(amt_credit_ln)) +
+  geom_density()
+```
+```{r}
+ggplot(credit, aes(ext_source_3)) +
+  geom_density()
+```
+```{r}
+ggplot(credit, aes(years_last_phone_change)) +
+  geom_density()
+
+ggplot(credit, aes(age_years)) +
+  geom_density()
+
+```
+
+```{r}
+lm1 <- lm(ext_source_3 ~ age_years + years_last_phone_change + amt_credit_ln +
+            income_total_ln + cnt_kids, data = credit) 
+pred.lm1 <- predict(lm1, newdata = credit)
+MAE.lm1 <- mean(abs(credit$ext_source_3 - pred.lm1))
+```
+
+```{r}
+Accuracy <- function(pred, real, threshold = 0.5){
+  predclass <- ifelse(pred > threshold, 1, 0)
+  acc <- sum(predclass == real) /length(real)
+  return(acc)
+}
+```
+
+```{r}
+set.seed(777)
+train.index <- sample(1:nrow(credit), round(0.7*(nrow(credit))), replace = F)
+
+credit.train <- credit[train.index, ]
+credit.test <- credit[-train.index, ]
+
+```
+
+```{r}
+log1 <- glm(target ~ id_curr + gender + own_car + own_realty + cnt_kids + income_total + amt_credit + income_type + educ_type + family_status + housing_type + age_days + occup_type + ext_source_3 + days_last_phone_change + years_last_phone_change + age_years + income_total_ln + amt_credit_ln, data = credit.train, family = binomial("logit"))
+
+pred.log1 <- predict(log1, credit.test, type = "response" )
+Accuracy(pred.log1, credit.test$target)
+```
+
+```{r}
+
 ```
 
