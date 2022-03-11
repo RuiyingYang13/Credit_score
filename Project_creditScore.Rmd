@@ -144,23 +144,74 @@ Accuracy <- function(pred, real, threshold = 0.5){
 }
 ```
 
+
+```{r}
+log1 <- glm(target ~ id_curr + gender + own_car + own_realty + cnt_kids + income_total + amt_credit + income_type + educ_type + family_status + housing_type + age_days + occup_type + ext_source_3 + days_last_phone_change + years_last_phone_change + age_years + income_total_ln + amt_credit_ln, data = credit, family = binomial("logit"))
+
+pred.log1 <- predict(log1, credit, type = "response" )
+Accuracy(pred.log1, credit$target)
+```
+
+
+```{r}
+# set.seed(777)
+# train.index <- sample(1:nrow(credit), round(0.7*(nrow(credit))), replace = F)
+# 
+# credit.train <- credit[train.index, ]
+# credit.test <- credit[-train.index, ]
+```
+
+```{r}
+# set.seed(765)
+# train.Index <-  sample(1:nrow(credit), round(0.7*nrow(credit)), replace = F)
+# 
+# credit.train <- credit[train.Index,]
+# credit.test <- credit[-train.Index,]
+# 
+# str(credit)
+# features <- c("gender", "own_car", "own_realty")
+# 
+# x.train <- model.matrix( ~ . -1, data = credit.train[, features])
+# x.test  <- model.matrix( ~ . -1, data = credit.test[, features])
+# set.seed(77)
+# spending_points_ridge <- glmnet(X.train, credit.train$target, alpha = 0, family="binomial")
+# spending_points_ridge_cv <- cv.glmnet(X.train, credit.train$target, alpha = 0,
+#                                       type.measure = "class", 
+#                                       lambda = 10^seq(-5, 1, length.out = 100),
+#                                       family="binomial", nfolds = 10)
+# 
+# pred.spending_points_ridge <-  as.vector(predict(spending_points_ridge, newx = X.test,type = "response",s = spending_points_ridge_cv$lambda.min))
+```
+
 ```{r}
 set.seed(777)
-train.index <- sample(1:nrow(credit), round(0.7*(nrow(credit))), replace = F)
-
+train.index <- sample(1:nrow(credit), round(0.7*nrow(credit)), replace = T)
 credit.train <- credit[train.index, ]
 credit.test <- credit[-train.index, ]
 
-```
+str(credit)
+features <- c("gender", "own_car", "income_total", "own_realty", "cnt_kids", "income_total", "amt_credit", "educ_type", "family_status", "housing_type", "age_days", "occup_type", "ext_source_3", "days_last_phone_change", "years_last_phone_change", "age_years", "income_total_ln", "amt_credit_ln")
+x.train <- model.matrix( ~ . -1, data = credit.train[, features])
+x.test <- model.matrix( ~ . -1, data = credit.test[, features])
 
-```{r}
-log1 <- glm(target ~ id_curr + gender + own_car + own_realty + cnt_kids + income_total + amt_credit + income_type + educ_type + family_status + housing_type + age_days + occup_type + ext_source_3 + days_last_phone_change + years_last_phone_change + age_years + income_total_ln + amt_credit_ln, data = credit.train, family = binomial("logit"))
+y.train <- credit.train$target
+y.test <- credit.test$target
 
-pred.log1 <- predict(log1, credit.test, type = "response" )
-Accuracy(pred.log1, credit.test$target)
-```
+log_r <- glmnet(x.train, y.train, alpha = 0, family = "binomial")
+log_r_cv <- cv.glmnet(x.train, y.train, alpha = 0,
+                      type.measure = "class",
+                      lambda = 10^seq(-5,1, length.out = 100),
+                      family = "binomial", nfolds = 10)
+pred.log_r <- predict(log_r, x.test, type = "response", s = log_r_cv$lambda.min)
+Accuracy(pred.log_r, y.test)
 
-```{r}
 
+log_l <- glmnet(x.train, y.train, alpha = 1, family = "binomial")
+log_l_cv <- cv.glmnet(x.train, y.train, alpha = 1,
+                      type.measure = "class",
+                      lambda = 10^seq(-5,1, length.out = 100),
+                      family = "binomial", nfolds = 10)
+pred.log_l <- predict(log_l, x.test, type = "response", s = log_l_cv$lambda.min)
+Accuracy(pred.log_l, y.test)
 ```
 
