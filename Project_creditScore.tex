@@ -1,0 +1,758 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{project}
+\author{}
+\date{\vspace{-2.5em}}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={project},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\hypertarget{load-packages-read-in-the-data-and-observe-the-structure-of-the-data.}{%
+\section{1, Load packages, read in the data and observe the structure of
+the
+data.}\label{load-packages-read-in-the-data-and-observe-the-structure-of-the-data.}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{library}\NormalTok{(pacman)}
+\FunctionTok{p\_load}\NormalTok{(ggplot2,}
+\NormalTok{      cowplot,}
+\NormalTok{      stargazer,}
+\NormalTok{      moments,}
+\NormalTok{      glmnet,}
+\NormalTok{      pROC,}
+\NormalTok{      rpart,}
+\NormalTok{      rpart.plot)}
+
+\NormalTok{credit }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"/Users/yangruiying/Desktop/r\_wiederholen/credit\_scoring.csv"}\NormalTok{, }\AttributeTok{header =}\NormalTok{ T, }\AttributeTok{sep =} \StringTok{","}\NormalTok{)}
+
+\FunctionTok{str}\NormalTok{(credit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    50000 obs. of  17 variables:
+##  $ id_curr               : int  383355 128421 339076 149313 139423 426636 440756 213074 330190 176242 ...
+##  $ target                : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ gender                : chr  "F" "M" "F" "F" ...
+##  $ own_car               : chr  "N" "Y" "Y" "Y" ...
+##  $ own_realty            : chr  "Y" "Y" "Y" "Y" ...
+##  $ cnt_kids              : int  0 2 0 2 0 1 0 0 0 0 ...
+##  $ income_total          : num  90000 121500 279000 180000 67500 ...
+##  $ amt_credit            : num  298512 148365 794174 558855 47970 ...
+##  $ income_type           : chr  "Working" "Working" "State servant" "Working" ...
+##  $ educ_type             : chr  "Secondary / secondary special" "Secondary / secondary special" "Secondary / secondary special" "Secondary / secondary special" ...
+##  $ family_status         : chr  "Married" "Married" "Single / not married" "Married" ...
+##  $ housing_type          : chr  "House / apartment" "House / apartment" "House / apartment" "House / apartment" ...
+##  $ age_days              : int  -14927 -14247 -16824 -13433 -22140 -13493 -23161 -21289 -15300 -20927 ...
+##  $ car_age               : int  -999 17 8 14 -999 -999 -999 -999 7 22 ...
+##  $ occup_type            : chr  "" "Security staff" "" "" ...
+##  $ ext_source_3          : num  0.792 0.614 0.633 0.129 0.519 ...
+##  $ days_last_phone_change: int  0 0 -2325 -1750 -1895 -2709 -1226 -1257 -2773 -535 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(credit))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                id_curr                 target                 gender 
+##                      0                      0                      0 
+##                own_car             own_realty               cnt_kids 
+##                      0                      0                      0 
+##           income_total             amt_credit            income_type 
+##                      0                      0                      0 
+##              educ_type          family_status           housing_type 
+##                      0                      0                      0 
+##               age_days                car_age             occup_type 
+##                      0                      0                      0 
+##           ext_source_3 days_last_phone_change 
+##                      0                      0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colSums}\NormalTok{(credit }\SpecialCharTok{==} \StringTok{"{-}999"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                id_curr                 target                 gender 
+##                      0                      0                      0 
+##                own_car             own_realty               cnt_kids 
+##                      0                      0                      0 
+##           income_total             amt_credit            income_type 
+##                      0                      0                      0 
+##              educ_type          family_status           housing_type 
+##                      0                      0                      0 
+##               age_days                car_age             occup_type 
+##                      0                  33020                      0 
+##           ext_source_3 days_last_phone_change 
+##                   9997                     10
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{colSums}\NormalTok{(credit }\SpecialCharTok{==} \StringTok{""}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                id_curr                 target                 gender 
+##                      0                      0                      0 
+##                own_car             own_realty               cnt_kids 
+##                      0                      0                      0 
+##           income_total             amt_credit            income_type 
+##                      0                      0                      0 
+##              educ_type          family_status           housing_type 
+##                      0                      0                      0 
+##               age_days                car_age             occup_type 
+##                      0                      0                  15885 
+##           ext_source_3 days_last_phone_change 
+##                      0                      0
+\end{verbatim}
+
+Description of the data: There are in total 17 columns and 50000 rows.
+The 17 variables are as following:
+
+id\_curr \textbar{} ID of a loan in our sample \textbar{} target
+\textbar{} Target variable (1 - client with payment difficulties: he/she
+had late payment more than X days on at least one of the first Y
+installments of the loan in our sample, 0 - all other cases) \textbar{}
+gender \textbar{} Gender of a client \textbar{} own\_car \textbar{} Flag
+if a client owns a car \textbar{} own\_realty \textbar{} Flag if a
+client owns a house or a flat \textbar{} cnt\_kids \textbar{} Number of
+children the client has \textbar{} income\_total \textbar{} Income of a
+client \textbar{} amt\_credit \textbar{} Credit amount of the loan
+\textbar{} income\_type \textbar{} Client's income type (businessman,
+working, maternity leave) \textbar{} educ\_type \textbar{} Level of the
+highest education a client achieved \textbar{} family\_status\textbar{}
+Family status of a client \textbar{} housing\_type \textbar{} Housing
+situation of a client (renting, living with parents, \ldots) \textbar{}
+age\_days \textbar{} Client's age in days at the time of application
+\textbar{} car\_age \textbar{} Age of a client's car \textbar{} NA: -999
+occup\_type \textbar{} Type of occupation a client has \textbar{}
+ext\_source\_3 \textbar{} Normalized score from external data source
+\textbar{} NA: -999 days\_last\_phone\_change \textbar{} How many days
+before application did a client change his or her phone (gadget)
+\textbar{} NA: -999
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\ControlFlowTok{for}\NormalTok{ (var }\ControlFlowTok{in} \FunctionTok{c}\NormalTok{(}\StringTok{"ext\_source\_3"}\NormalTok{, }\StringTok{"car\_age"}\NormalTok{, }\StringTok{"days\_last\_phone\_change"}\NormalTok{, }\StringTok{"occup\_type"}\NormalTok{)) \{}
+\NormalTok{  credit[[var]][credit[[var]] }\SpecialCharTok{==} \StringTok{"{-}999"} \SpecialCharTok{|}\NormalTok{ credit[[var]] }\SpecialCharTok{==} \StringTok{""}\NormalTok{] }\OtherTok{\textless{}{-}} \ConstantTok{NA}
+  \FunctionTok{print}\NormalTok{(}\FunctionTok{table}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(credit[[var]])))}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## FALSE  TRUE 
+## 40003  9997 
+## 
+## FALSE  TRUE 
+## 16980 33020 
+## 
+## FALSE  TRUE 
+## 49990    10 
+## 
+## FALSE  TRUE 
+## 34115 15885
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{credit }\OtherTok{\textless{}{-}}\NormalTok{ credit[}\SpecialCharTok{!}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{ext\_source\_3)),]}
+\CommentTok{\# credit$ext\_source\_3[is.na(credit$ext\_source\_3)] \textless{}{-} median(credit$ext\_source\_3, na.rm = T)}
+
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{days\_last\_phone\_change[}\FunctionTok{is.na}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{days\_last\_phone\_change)] }\OtherTok{\textless{}{-}} \FunctionTok{median}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{days\_last\_phone\_change, }\AttributeTok{na.rm =}\NormalTok{ T)}
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{years\_last\_phone\_change }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{((}\SpecialCharTok{{-}}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{days\_last\_phone\_change)) }\SpecialCharTok{/} \DecValTok{365}\NormalTok{)}
+\FunctionTok{stargazer}\NormalTok{(credit[, }\FunctionTok{c}\NormalTok{(}\StringTok{"days\_last\_phone\_change"}\NormalTok{, }\StringTok{"years\_last\_phone\_change"}\NormalTok{)], }\AttributeTok{type =} \StringTok{"text"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## =============================================================================
+## Statistic                 N      Mean   St. Dev.  Min   Pctl(25) Pctl(75) Max
+## -----------------------------------------------------------------------------
+## days_last_phone_change  40,003 -998.555 836.796  -4,153  -1,618    -288    0 
+## years_last_phone_change 40,003  2.729    2.309     0       1        4     11 
+## -----------------------------------------------------------------------------
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{class}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{occup\_type)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "character"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{levels}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{occup\_type) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{levels}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{occup\_type), }\StringTok{"Unknown"}\NormalTok{)}
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{occup\_type[}\FunctionTok{is.na}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{occup\_type)] }\OtherTok{\textless{}{-}} \StringTok{"Unknown"}
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{occup\_type }\OtherTok{\textless{}{-}} \FunctionTok{factor}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{occup\_type)}
+\CommentTok{\# credit$occup\_type[is.na(credit$occup\_type)] \textless{}{-} names(sort(table(credit$occup\_type), decreasing = T)[1])}
+
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{age\_years }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{((}\SpecialCharTok{{-}}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{age\_days)) }\SpecialCharTok{/} \DecValTok{365}\NormalTok{)}
+
+\FunctionTok{colSums}\NormalTok{(}\FunctionTok{is.na}\NormalTok{(credit))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##                 id_curr                  target                  gender 
+##                       0                       0                       0 
+##                 own_car              own_realty                cnt_kids 
+##                       0                       0                       0 
+##            income_total              amt_credit             income_type 
+##                       0                       0                       0 
+##               educ_type           family_status            housing_type 
+##                       0                       0                       0 
+##                age_days                 car_age              occup_type 
+##                       0                   26038                       0 
+##            ext_source_3  days_last_phone_change years_last_phone_change 
+##                       0                       0                       0 
+##               age_years 
+##                       0
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{target)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##     0     1 
+## 36880  3123
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{gender)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##     F     M 
+## 26626 13377
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{own\_car)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##     N     Y 
+## 26038 13965
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{own\_realty)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##     N     Y 
+## 12230 27773
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{income\_type)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Commercial associate            Pensioner        State servant 
+##                 9157                 7338                 3009 
+##              Student              Working 
+##                    1                20498
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{educ\_type)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##               Academic degree              Higher education 
+##                            16                         10169 
+##             Incomplete higher               Lower secondary 
+##                          1257                           480 
+## Secondary / secondary special 
+##                         28081
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{family\_status)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##       Civil marriage              Married            Separated 
+##                 3658                25971                 2625 
+## Single / not married                Widow 
+##                 5587                 2162
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{housing\_type)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##     Co-op apartment   House / apartment Municipal apartment    Office apartment 
+##                 164               35709                1439                 333 
+##    Rented apartment        With parents 
+##                 575                1783
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{table}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{occup\_type)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##           Accountants        Cleaning staff         Cooking staff 
+##                  1306                   590                   754 
+##            Core staff               Drivers High skill tech staff 
+##                  3730                  2309                  1474 
+##              HR staff              IT staff              Laborers 
+##                    75                    67                  7066 
+##    Low-skill Laborers              Managers        Medicine staff 
+##                   219                  2863                  1180 
+## Private service staff         Realty agents           Sales staff 
+##                   345                    98                  3979 
+##           Secretaries        Security staff               Unknown 
+##                   181                   921                 12664 
+##  Waiters/barmen staff 
+##                   182
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# for sparse categorical values}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(credit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    40003 obs. of  19 variables:
+##  $ id_curr                : int  383355 128421 339076 149313 139423 426636 440756 213074 330190 176242 ...
+##  $ target                 : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ gender                 : chr  "F" "M" "F" "F" ...
+##  $ own_car                : chr  "N" "Y" "Y" "Y" ...
+##  $ own_realty             : chr  "Y" "Y" "Y" "Y" ...
+##  $ cnt_kids               : int  0 2 0 2 0 1 0 0 0 0 ...
+##  $ income_total           : num  90000 121500 279000 180000 67500 ...
+##  $ amt_credit             : num  298512 148365 794174 558855 47970 ...
+##  $ income_type            : chr  "Working" "Working" "State servant" "Working" ...
+##  $ educ_type              : chr  "Secondary / secondary special" "Secondary / secondary special" "Secondary / secondary special" "Secondary / secondary special" ...
+##  $ family_status          : chr  "Married" "Married" "Single / not married" "Married" ...
+##  $ housing_type           : chr  "House / apartment" "House / apartment" "House / apartment" "House / apartment" ...
+##  $ age_days               : int  -14927 -14247 -16824 -13433 -22140 -13493 -23161 -21289 -15300 -20927 ...
+##  $ car_age                : int  NA 17 8 14 NA NA NA NA 7 22 ...
+##  $ occup_type             : Factor w/ 19 levels "Accountants",..: 18 17 18 18 18 9 18 18 6 2 ...
+##  $ ext_source_3           : num  0.792 0.614 0.633 0.129 0.519 ...
+##  $ days_last_phone_change : num  0 0 -2325 -1750 -1895 ...
+##  $ years_last_phone_change: num  0 0 6 5 5 7 3 3 8 1 ...
+##  $ age_years              : num  41 39 46 37 61 37 63 58 42 57 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{zScore }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(var)\{}
+\NormalTok{  me }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(var, }\AttributeTok{na.rm =}\NormalTok{ T)}
+\NormalTok{  sd }\OtherTok{\textless{}{-}} \FunctionTok{sd}\NormalTok{(var, }\AttributeTok{na.rm =}\NormalTok{ T)}
+\NormalTok{  score }\OtherTok{\textless{}{-}}\NormalTok{ (var }\SpecialCharTok{{-}}\NormalTok{ me) }\SpecialCharTok{/}\NormalTok{ sd}
+  \FunctionTok{return}\NormalTok{(score)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+cnt\_kids income\_total amt\_credit ext\_source\_3
+years\_last\_phone\_change age\_years
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(cnt\_kids)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-6-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x.cnt\_kids }\OtherTok{\textless{}{-}} \FunctionTok{zScore}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{cnt\_kids)}
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{cnt\_kids[x.cnt\_kids }\SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##  [1]  5  5  5 14  5  6  5  8  6  5  5  5 12  5  8
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{cnt\_kids[x.cnt\_kids }\SpecialCharTok{\textgreater{}} \DecValTok{5}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{cnt\_kids, }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{+} \DecValTok{5}\SpecialCharTok{*}\FunctionTok{sd}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{cnt\_kids)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(income\_total)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-7-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x.income\_total }\OtherTok{\textless{}{-}} \FunctionTok{zScore}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{income\_total)}
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{income\_total[x.income\_total }\SpecialCharTok{\textgreater{}} \DecValTok{19}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 2250000 3950060 6750000 3600000 2250000
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{income\_total[x.income\_total }\SpecialCharTok{\textgreater{}} \DecValTok{19}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{income\_total, }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{+} \DecValTok{19}\SpecialCharTok{*}\FunctionTok{sd}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{income\_total)}
+
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{income\_total\_ln }\OtherTok{\textless{}{-}} \FunctionTok{log}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{income\_total }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(income\_total\_ln)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-7-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(amt\_credit)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x.amt\_credit }\OtherTok{\textless{}{-}} \FunctionTok{zScore}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{amt\_credit)}
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{amt\_credit[x.amt\_credit }\SpecialCharTok{\textgreater{}} \DecValTok{6}\NormalTok{]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 4050000 3600000 3150000 3860019
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{amt\_credit[x.amt\_credit }\SpecialCharTok{\textgreater{}} \DecValTok{6}\NormalTok{] }\OtherTok{\textless{}{-}} \FunctionTok{round}\NormalTok{(}\FunctionTok{mean}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{amt\_credit, }\AttributeTok{na.rm =}\NormalTok{ T)) }\SpecialCharTok{+} \DecValTok{6}\SpecialCharTok{*}\FunctionTok{sd}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{amt\_credit)}
+
+\NormalTok{credit}\SpecialCharTok{$}\NormalTok{amt\_credit\_ln }\OtherTok{\textless{}{-}} \FunctionTok{log}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{amt\_credit }\SpecialCharTok{+} \DecValTok{1}\NormalTok{)}
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(amt\_credit\_ln)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-8-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(ext\_source\_3)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-9-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(years\_last\_phone\_change)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(credit, }\FunctionTok{aes}\NormalTok{(age\_years)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_density}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{Project_creditScore_files/figure-latex/unnamed-chunk-10-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{777}\NormalTok{)}
+\NormalTok{train.index }\OtherTok{\textless{}{-}} \FunctionTok{sample}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{nrow}\NormalTok{(credit), }\FunctionTok{round}\NormalTok{(}\FloatTok{0.7}\SpecialCharTok{*}\FunctionTok{nrow}\NormalTok{(credit)), }\AttributeTok{replace =}\NormalTok{ T)}
+\NormalTok{credit.train }\OtherTok{\textless{}{-}}\NormalTok{ credit[train.index, ]}
+\NormalTok{credit.test }\OtherTok{\textless{}{-}}\NormalTok{ credit[}\SpecialCharTok{{-}}\NormalTok{train.index, ]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{lm1 }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(ext\_source\_3 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ age\_years }\SpecialCharTok{+}\NormalTok{ years\_last\_phone\_change }\SpecialCharTok{+}\NormalTok{ amt\_credit\_ln }\SpecialCharTok{+}
+\NormalTok{            income\_total\_ln }\SpecialCharTok{+}\NormalTok{ cnt\_kids, }\AttributeTok{data =}\NormalTok{ credit.train) }
+\NormalTok{pred.lm1 }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(lm1, }\AttributeTok{newdata =}\NormalTok{ credit.test)}
+\NormalTok{MAE.lm1 }\OtherTok{\textless{}{-}} \FunctionTok{mean}\NormalTok{(}\FunctionTok{abs}\NormalTok{(credit}\SpecialCharTok{$}\NormalTok{ext\_source\_3 }\SpecialCharTok{{-}}\NormalTok{ pred.lm1))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning in credit$ext_source_3 - pred.lm1: longer object length is not a
+## multiple of shorter object length
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Accuracy }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(pred, real, }\AttributeTok{threshold =} \FloatTok{0.5}\NormalTok{)\{}
+\NormalTok{  predclass }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(pred }\SpecialCharTok{\textgreater{}}\NormalTok{ threshold, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+\NormalTok{  acc }\OtherTok{\textless{}{-}} \FunctionTok{sum}\NormalTok{(predclass }\SpecialCharTok{==}\NormalTok{ real) }\SpecialCharTok{/}\FunctionTok{length}\NormalTok{(real)}
+  \FunctionTok{return}\NormalTok{(acc)}
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{log1 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(target }\SpecialCharTok{\textasciitilde{}}\NormalTok{ id\_curr }\SpecialCharTok{+}\NormalTok{ gender }\SpecialCharTok{+}\NormalTok{ own\_car }\SpecialCharTok{+}\NormalTok{ own\_realty }\SpecialCharTok{+}\NormalTok{ cnt\_kids }\SpecialCharTok{+}\NormalTok{ income\_total }\SpecialCharTok{+}\NormalTok{ amt\_credit }\SpecialCharTok{+}\NormalTok{ income\_type }\SpecialCharTok{+}\NormalTok{ educ\_type }\SpecialCharTok{+}\NormalTok{ family\_status }\SpecialCharTok{+}\NormalTok{ housing\_type }\SpecialCharTok{+}\NormalTok{ age\_days }\SpecialCharTok{+}\NormalTok{ occup\_type }\SpecialCharTok{+}\NormalTok{ ext\_source\_3 }\SpecialCharTok{+}\NormalTok{ days\_last\_phone\_change }\SpecialCharTok{+}\NormalTok{ years\_last\_phone\_change }\SpecialCharTok{+}\NormalTok{ age\_years }\SpecialCharTok{+}\NormalTok{ income\_total\_ln }\SpecialCharTok{+}\NormalTok{ amt\_credit\_ln, }\AttributeTok{data =}\NormalTok{ credit, }\AttributeTok{family =} \FunctionTok{binomial}\NormalTok{(}\StringTok{"logit"}\NormalTok{))}
+
+\NormalTok{pred.log1 }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(log1, credit, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{ )}
+\FunctionTok{Accuracy}\NormalTok{(pred.log1, credit}\SpecialCharTok{$}\NormalTok{target)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9218559
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{str}\NormalTok{(credit)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 'data.frame':    40003 obs. of  21 variables:
+##  $ id_curr                : int  383355 128421 339076 149313 139423 426636 440756 213074 330190 176242 ...
+##  $ target                 : int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ gender                 : chr  "F" "M" "F" "F" ...
+##  $ own_car                : chr  "N" "Y" "Y" "Y" ...
+##  $ own_realty             : chr  "Y" "Y" "Y" "Y" ...
+##  $ cnt_kids               : num  0 2 0 2 0 1 0 0 0 0 ...
+##  $ income_total           : num  90000 121500 279000 180000 67500 ...
+##  $ amt_credit             : num  298512 148365 794174 558855 47970 ...
+##  $ income_type            : chr  "Working" "Working" "State servant" "Working" ...
+##  $ educ_type              : chr  "Secondary / secondary special" "Secondary / secondary special" "Secondary / secondary special" "Secondary / secondary special" ...
+##  $ family_status          : chr  "Married" "Married" "Single / not married" "Married" ...
+##  $ housing_type           : chr  "House / apartment" "House / apartment" "House / apartment" "House / apartment" ...
+##  $ age_days               : int  -14927 -14247 -16824 -13433 -22140 -13493 -23161 -21289 -15300 -20927 ...
+##  $ car_age                : int  NA 17 8 14 NA NA NA NA 7 22 ...
+##  $ occup_type             : Factor w/ 19 levels "Accountants",..: 18 17 18 18 18 9 18 18 6 2 ...
+##  $ ext_source_3           : num  0.792 0.614 0.633 0.129 0.519 ...
+##  $ days_last_phone_change : num  0 0 -2325 -1750 -1895 ...
+##  $ years_last_phone_change: num  0 0 6 5 5 7 3 3 8 1 ...
+##  $ age_years              : num  41 39 46 37 61 37 63 58 42 57 ...
+##  $ income_total_ln        : num  11.4 11.7 12.5 12.1 11.1 ...
+##  $ amt_credit_ln          : num  12.6 11.9 13.6 13.2 10.8 ...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{features }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"gender"}\NormalTok{, }\StringTok{"own\_car"}\NormalTok{, }\StringTok{"own\_realty"}\NormalTok{, }\StringTok{"cnt\_kids"}\NormalTok{, }\StringTok{"income\_total"}\NormalTok{, }\StringTok{"amt\_credit"}\NormalTok{, }\StringTok{"educ\_type"}\NormalTok{, }\StringTok{"family\_status"}\NormalTok{, }\StringTok{"housing\_type"}\NormalTok{, }\StringTok{"age\_days"}\NormalTok{, }\StringTok{"occup\_type"}\NormalTok{, }\StringTok{"ext\_source\_3"}\NormalTok{, }\StringTok{"days\_last\_phone\_change"}\NormalTok{, }\StringTok{"years\_last\_phone\_change"}\NormalTok{, }\StringTok{"age\_years"}\NormalTok{, }\StringTok{"income\_total\_ln"}\NormalTok{, }\StringTok{"amt\_credit\_ln"}\NormalTok{)}
+\NormalTok{x.train }\OtherTok{\textless{}{-}} \FunctionTok{model.matrix}\NormalTok{( }\SpecialCharTok{\textasciitilde{}}\NormalTok{ . }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{data =}\NormalTok{ credit.train[, features])}
+\NormalTok{x.test }\OtherTok{\textless{}{-}} \FunctionTok{model.matrix}\NormalTok{( }\SpecialCharTok{\textasciitilde{}}\NormalTok{ . }\SpecialCharTok{{-}}\DecValTok{1}\NormalTok{, }\AttributeTok{data =}\NormalTok{ credit.test[, features])}
+
+\NormalTok{y.train }\OtherTok{\textless{}{-}}\NormalTok{ credit.train}\SpecialCharTok{$}\NormalTok{target}
+\NormalTok{y.test }\OtherTok{\textless{}{-}}\NormalTok{ credit.test}\SpecialCharTok{$}\NormalTok{target}
+
+\NormalTok{log\_r }\OtherTok{\textless{}{-}} \FunctionTok{glmnet}\NormalTok{(x.train, y.train, }\AttributeTok{alpha =} \DecValTok{0}\NormalTok{, }\AttributeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+\NormalTok{log\_r\_cv }\OtherTok{\textless{}{-}} \FunctionTok{cv.glmnet}\NormalTok{(x.train, y.train, }\AttributeTok{alpha =} \DecValTok{0}\NormalTok{,}
+                      \AttributeTok{type.measure =} \StringTok{"class"}\NormalTok{,}
+                      \AttributeTok{lambda =} \DecValTok{10}\SpecialCharTok{\^{}}\FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\DecValTok{1}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{100}\NormalTok{),}
+                      \AttributeTok{family =} \StringTok{"binomial"}\NormalTok{, }\AttributeTok{nfolds =} \DecValTok{10}\NormalTok{)}
+\NormalTok{pred.log\_r }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(log\_r, x.test, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{, }\AttributeTok{s =}\NormalTok{ log\_r\_cv}\SpecialCharTok{$}\NormalTok{lambda.min)}
+\FunctionTok{Accuracy}\NormalTok{(pred.log\_r, y.test)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9246651
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{log\_l }\OtherTok{\textless{}{-}} \FunctionTok{glmnet}\NormalTok{(x.train, y.train, }\AttributeTok{alpha =} \DecValTok{1}\NormalTok{, }\AttributeTok{family =} \StringTok{"binomial"}\NormalTok{)}
+\NormalTok{log\_l\_cv }\OtherTok{\textless{}{-}} \FunctionTok{cv.glmnet}\NormalTok{(x.train, y.train, }\AttributeTok{alpha =} \DecValTok{1}\NormalTok{,}
+                      \AttributeTok{type.measure =} \StringTok{"class"}\NormalTok{,}
+                      \AttributeTok{lambda =} \DecValTok{10}\SpecialCharTok{\^{}}\FunctionTok{seq}\NormalTok{(}\SpecialCharTok{{-}}\DecValTok{5}\NormalTok{,}\DecValTok{1}\NormalTok{, }\AttributeTok{length.out =} \DecValTok{100}\NormalTok{),}
+                      \AttributeTok{family =} \StringTok{"binomial"}\NormalTok{, }\AttributeTok{nfolds =} \DecValTok{10}\NormalTok{)}
+\NormalTok{pred.log\_l }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(log\_l, x.test, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{, }\AttributeTok{s =}\NormalTok{ log\_l\_cv}\SpecialCharTok{$}\NormalTok{lambda.min)}
+\FunctionTok{Accuracy}\NormalTok{(pred.log\_l, y.test)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9246651
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{features1 }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"target"}\NormalTok{, }\StringTok{"gender"}\NormalTok{, }\StringTok{"own\_car"}\NormalTok{, }\StringTok{"income\_total"}\NormalTok{, }\StringTok{"own\_realty"}\NormalTok{, }\StringTok{"cnt\_kids"}\NormalTok{, }\StringTok{"amt\_credit"}\NormalTok{, }\StringTok{"educ\_type"}\NormalTok{, }\StringTok{"family\_status"}\NormalTok{, }\StringTok{"housing\_type"}\NormalTok{, }\StringTok{"age\_days"}\NormalTok{, }\StringTok{"occup\_type"}\NormalTok{, }\StringTok{"ext\_source\_3"}\NormalTok{, }\StringTok{"days\_last\_phone\_change"}\NormalTok{, }\StringTok{"years\_last\_phone\_change"}\NormalTok{, }\StringTok{"age\_years"}\NormalTok{, }\StringTok{"income\_total\_ln"}\NormalTok{, }\StringTok{"amt\_credit\_ln"}\NormalTok{)}
+\NormalTok{dt }\OtherTok{\textless{}{-}} \FunctionTok{rpart}\NormalTok{(target }\SpecialCharTok{\textasciitilde{}}\NormalTok{ ., }
+            \AttributeTok{data =}\NormalTok{ credit.train[, features1],}
+            \AttributeTok{method =} \StringTok{"class"}\NormalTok{,}
+            \AttributeTok{parms =} \FunctionTok{list}\NormalTok{(}\AttributeTok{split =} \StringTok{"information"}\NormalTok{),}
+            \AttributeTok{model =}\NormalTok{ T)}
+\NormalTok{pred.dt }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(dt, credit.test, }\AttributeTok{type =} \StringTok{"prob"}\NormalTok{)[ ,}\DecValTok{2}\NormalTok{]}
+\FunctionTok{Accuracy}\NormalTok{(pred.dt, y.test)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.9246651
+\end{verbatim}
+
+\end{document}

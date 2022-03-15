@@ -1,13 +1,18 @@
 ---
 title: "project"
-output: html_document
-editor_options: 
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+editor_options:
   chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
+# 1, Load packages, read in the data and observe the structure of the data.
 
 ```{r}
 library(pacman)
@@ -16,7 +21,9 @@ p_load(ggplot2,
       stargazer,
       moments,
       glmnet,
-      pROC)
+      pROC,
+      rpart,
+      rpart.plot)
 
 credit <- read.csv("/Users/yangruiying/Desktop/r_wiederholen/credit_scoring.csv", header = T, sep = ",")
 
@@ -26,6 +33,36 @@ colSums(credit == "-999")
 colSums(credit == "")
 ```
 
+Description of the data:
+
+There are in total 17 columns and 50000 rows. The 17 variables are as following:
+1. id_curr is the ID of a loan in our sample. Its data type is int.
+2. target is the target variable (1 - client with payment difficulties: he/she had late payment more than X days on at least one of the first Y installments of the loan in our sample, 0 - all other cases). Its data type is int.
+3. gender is the gender of a client. Its data type is chr.
+4. own_car is the flag if a client owns a car. Its data type is chr.
+5. own_realty is the flag if a client owns a house or a flat. Its data type is chr.
+6. cnt_kids is the number of children the client has. Its data type is int.
+7. income_total is the income of a client. Its data type is num.
+8. amt_credit is the credit amount of the loan. Its data type is num.
+9. income_type is the client’s income type (businessman, working, maternity leave). Its data type is chr.
+10. educ_type is the level of the highest education a client achieved. Its data type is chr.
+11. family_status is the family status of a client. Its data type is chr.
+12. housing_type is the housing situation of a client (renting, living with parents, . . . ). Its data type is chr.
+13. age_days is the client’s age in days at the time of application. Its data type is int.
+14. car_age is the age of a client’s car. Its data type is int.
+15. occup_type is the type of occupation a client has. Its data type is chr.
+16. ext_source_3 is the normalized score from external data source. Its data type is num.
+17. days_last_phone_change reprensents how many days before application did a client change his or her phone (gadget). Its data type is int.
+
+NAs in the data:
+
+The NAs in the data are implicit and are recorded with the number "-999". Those values can be detected in the column "car_age", "ext_source_3", "days_last_phone_change". There are some other implicit NAs which are recorded with "". These values can be found in the column "occup_type".
+
+\pagebreak
+
+# 2. Treat missing values
+## 2.1 Transform the implicit NAs as explicit NAs for better analysis later
+
 ```{r}
 
 for (var in c("ext_source_3", "car_age", "days_last_phone_change", "occup_type")) {
@@ -34,24 +71,73 @@ for (var in c("ext_source_3", "car_age", "days_last_phone_change", "occup_type")
 }
 ```
 
-```{r}
-credit <- credit[!(is.na(credit$ext_source_3)),]
-# credit$ext_source_3[is.na(credit$ext_source_3)] <- median(credit$ext_source_3, na.rm = T)
+## 2.2 Treat missing values in ext_source_3
 
+```{r}
+credit$ext_source_3_imp <- credit$ext_source_3
+credit$ext_source_3_imp[is.na(credit$ext_source_3_imp)] <- median(credit$ext_source_3_imp, na.rm = T)
+
+ggplot(credit, aes(ext_source_3)) +
+  geom_density(na.rm=T, fill = "royalblue3", alpha = 0.2) +
+  geom_density(aes(x= ext_source_3_imp), fill = "coral", alpha = 0.2) +
+  labs(title = "Results of median imputation for ext_source_3",
+       x = "ext_source_3",
+       y = "Density") +
+  theme(plot.title=element_text(color = "royalblue4", size = 10, 
+                                  face = "bold", hjust = 0.5),
+        axis.title.x = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1),
+        axis.title.y = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1))
+str(credit)
+credit <- credit[, -18]
+credit <- credit[!(is.na(credit$ext_source_3)),]
+```
+
+First of all, the NA value are imputated with the median value. But it changed the distribution of the variable drastically, so the NAs are deleted.
+
+## 2.3 Treat missing values in car_age
+
+```{r}
+table(is.na(credit$car_age))
+```
+
+There are too much missing values in this column. So this column will not be considered for the future analysis.
+
+## 2.4 Treat missing values in days_last_phone_change
+
+```{r}
 credit$days_last_phone_change[is.na(credit$days_last_phone_change)] <- median(credit$days_last_phone_change, na.rm = T)
 credit$years_last_phone_change <- round((-(credit$days_last_phone_change)) / 365)
 stargazer(credit[, c("days_last_phone_change", "years_last_phone_change")], type = "text")
+```
 
+There are only 10 missing values. So those value are replaced with the median value. For better analysis, a new variable is introduced with positive values and the days are represented as years.
+
+## 2.5 Treat missing values in occup_type
+
+```{r}
 class(credit$occup_type)
 levels(credit$occup_type) <- c(levels(credit$occup_type), "Unknown")
 credit$occup_type[is.na(credit$occup_type)] <- "Unknown"
 credit$occup_type <- factor(credit$occup_type)
-# credit$occup_type[is.na(credit$occup_type)] <- names(sort(table(credit$occup_type), decreasing = T)[1])
-
-credit$age_years <- round((-(credit$age_days)) / 365)
-
-colSums(is.na(credit))
 ``` 
+
+There are almost 50% missing values in this column. So a new level "Unknown"is added and the type of this variable is changed as factor.
+
+\pagebreak
+
+# 3. Reformulate the data 
+## 3.1 Reformulate the data in age_days
+
+```{r}
+credit$age_years <- round((-(credit$age_days)) / 365)
+colSums(is.na(credit))
+```
+
+Because the data in this column are all negative values and the age are calculated with days, it is better to represent the data with positive values and represent it with years. A new variable called "age_years" is added to the data frame.
+
+## 3.2 Check sparse catogories for catogorical variables
 
 ```{r}
 table(credit$target)
@@ -63,25 +149,38 @@ table(credit$educ_type)
 table(credit$family_status)
 table(credit$housing_type)
 table(credit$occup_type)
-# for sparse categorical values
 ```
 
-```{r}
-str(credit)
-zScore <- function(var){
-  me <- mean(var, na.rm = T)
-  sd <- sd(var, na.rm = T)
-  score <- (var - me) / sd
-  return(score)
-}
+There are no sparse categories for those variables.
 
-```
+\pagebreak
+
+# 4. Outliers and skewness
+
+There are in total the following six continuous variables in the data frame:
+
 cnt_kids
 income_total
 amt_credit
 ext_source_3
 years_last_phone_change
 age_years 
+
+So they will be checked if there are any outliers in those columns respectively. If there are, they will be truncated. If the distirbution is not normal, the log function will be used to adjust the distribution.
+
+## 4.1 The user function for outliers truncation.
+
+```{r}
+zScore <- function(var){
+  me <- mean(var, na.rm = T)
+  sd <- sd(var, na.rm = T)
+  score <- (var - me) / sd
+  return(score)
+}
+```
+
+## 4.2 cnt_kids
+
 ```{r}
 ggplot(credit, aes(cnt_kids)) +
   geom_density()
@@ -89,8 +188,12 @@ ggplot(credit, aes(cnt_kids)) +
 x.cnt_kids <- zScore(credit$cnt_kids)
 credit$cnt_kids[x.cnt_kids > 5]
 credit$cnt_kids[x.cnt_kids > 5] <- round(mean(credit$cnt_kids, na.rm = T)) + 5*sd(credit$cnt_kids)
-
 ```
+
+There are many outliers in this column, so it is truncated.
+
+## 4.3 income_total
+
 ```{r}
 ggplot(credit, aes(income_total)) +
   geom_density()
@@ -104,6 +207,11 @@ ggplot(credit, aes(income_total_ln)) +
   geom_density()
 
 ```
+
+The same method is applied to the variable income_total. Other than that, the distribution is adjusted to normal distribution.
+
+## 4.4 amt_credit
+
 ```{r}
 ggplot(credit, aes(amt_credit)) +
   geom_density()
@@ -116,18 +224,111 @@ credit$amt_credit_ln <- log(credit$amt_credit + 1)
 ggplot(credit, aes(amt_credit_ln)) +
   geom_density()
 ```
+
+## 4.5 ext_source_3
+
 ```{r}
 ggplot(credit, aes(ext_source_3)) +
   geom_density()
 ```
+
+## 4.6 years_last_phone_change
+
 ```{r}
 ggplot(credit, aes(years_last_phone_change)) +
   geom_density()
+```
 
+## 4.7 age_years
+
+```{r}
 ggplot(credit, aes(age_years)) +
   geom_density()
 
 ```
+
+\pagebreak
+
+# 5. Visuallization
+
+## 5.1 The relationship between target and gender
+
+```{r}
+credit$target <- factor(credit$target)
+ggplot(credit, aes(x = target, fill = gender)) +
+  geom_bar(na.rm=T, 
+           position = "dodge",
+           alpha = 0.3) +
+  labs(title = "The relationship between target and gender",
+       x = "Target",
+       y = "Amount") +
+  theme(plot.title=element_text(color = "royalblue4", size = 10, 
+                                  face = "bold", hjust = 0.5),
+        axis.title.x = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1),
+        axis.title.y = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1))
+
+
+```
+
+Female take more loans than male and there are 10% people who have payment difficulties.
+
+## 5.2 The relationship between target and amt_credit
+
+```{r}
+ggplot(credit, aes(x = amt_credit, color = target, fill = target)) +
+  geom_density(na.rm=T, 
+           alpha = 0.3) +
+  labs(title = "The relationship between target and amt_credit",
+       x = "Amt_credit",
+       y = "Density") +
+  theme(plot.title=element_text(color = "royalblue4", size = 10, 
+                                  face = "bold", hjust = 0.5),
+        axis.title.x = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1),
+        axis.title.y = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1))
+str(credit)
+```
+
+For most of the cases, the more credit one has, the less likely that this person has payment difficulties. Other than when someone has a credit with an amount of 0.5e+00. 
+
+## 5.3 The relationship between income_total and amt_credit
+
+```{r}
+ggplot(credit, aes(amt_credit, income_total)) + # 
+  geom_point(alpha = 0.5) +
+  geom_smooth(method='lm',
+              se = TRUE,
+              colour = 'blue') +
+  geom_smooth(method='loess',
+              # otherwise computation times out
+              se = FALSE,
+              colour = 'coral') +
+  labs(title = "Relationship between credit amount and income") +
+  theme(plot.title=element_text(color = "royalblue4", size = 10, 
+                                  face = "bold", hjust = 0.5),
+        axis.title.x = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1),
+        axis.title.y = element_text(color = "royalblue4", size = 8, 
+                                    face = "italic", hjust =0.5, vjust = 1))
+```
+
+In the scatterplot we have the linear model represented by a red line and the one using `loess` represented by a blue line. First off we notice, that they are quite similar for the overwhelming majority of the data. Only for credits over 2 000 000 \$ do they start diverging with the linear model being less steep than the other one. It is questionable if this has sound meaning, as the data is very sparse for such high amounts. 
+In general we can see a moderate linear relationship between the credit amount and the income. 
+
+# 6. Modelling
+## 6.1 Split data into train(70%) and test(30%) data
+
+```{r}
+set.seed(777)
+train.index <- sample(1:nrow(credit), round(0.7*nrow(credit)), replace = T)
+credit.train <- credit[train.index, ]
+credit.test <- credit[-train.index, ]
+```
+
+## 6.2 Linear regression
 
 ```{r}
 lm1 <- lm(ext_source_3 ~ age_years + years_last_phone_change + amt_credit_ln +
@@ -136,66 +337,27 @@ pred.lm1 <- predict(lm1, newdata = credit)
 MAE.lm1 <- mean(abs(credit$ext_source_3 - pred.lm1))
 ```
 
-```{r}
-Accuracy <- function(pred, real, threshold = 0.5){
-  predclass <- ifelse(pred > threshold, 1, 0)
-  acc <- sum(predclass == real) /length(real)
-  return(acc)
-}
-```
-
+## 6.3 Logistic regression models
 
 ```{r}
-log1 <- glm(target ~ id_curr + gender + own_car + own_realty + cnt_kids + income_total + amt_credit + income_type + educ_type + family_status + housing_type + age_days + occup_type + ext_source_3 + days_last_phone_change + years_last_phone_change + age_years + income_total_ln + amt_credit_ln, data = credit, family = binomial("logit"))
+log1 <- glm(target ~ gender + own_car + own_realty + cnt_kids + educ_type + family_status + housing_type + occup_type + ext_source_3 + years_last_phone_change + age_years + income_total_ln + amt_credit_ln, data = credit, family = binomial("logit"))
 
 pred.log1 <- predict(log1, credit, type = "response" )
 Accuracy(pred.log1, credit$target)
 ```
 
+## 6.4 Logistic regression with Ridge and Lasso
 
 ```{r}
-# set.seed(777)
-# train.index <- sample(1:nrow(credit), round(0.7*(nrow(credit))), replace = F)
-# 
-# credit.train <- credit[train.index, ]
-# credit.test <- credit[-train.index, ]
-```
-
-```{r}
-# set.seed(765)
-# train.Index <-  sample(1:nrow(credit), round(0.7*nrow(credit)), replace = F)
-# 
-# credit.train <- credit[train.Index,]
-# credit.test <- credit[-train.Index,]
-# 
-# str(credit)
-# features <- c("gender", "own_car", "own_realty")
-# 
-# x.train <- model.matrix( ~ . -1, data = credit.train[, features])
-# x.test  <- model.matrix( ~ . -1, data = credit.test[, features])
-# set.seed(77)
-# spending_points_ridge <- glmnet(X.train, credit.train$target, alpha = 0, family="binomial")
-# spending_points_ridge_cv <- cv.glmnet(X.train, credit.train$target, alpha = 0,
-#                                       type.measure = "class", 
-#                                       lambda = 10^seq(-5, 1, length.out = 100),
-#                                       family="binomial", nfolds = 10)
-# 
-# pred.spending_points_ridge <-  as.vector(predict(spending_points_ridge, newx = X.test,type = "response",s = spending_points_ridge_cv$lambda.min))
-```
-
-```{r}
-set.seed(777)
-train.index <- sample(1:nrow(credit), round(0.7*nrow(credit)), replace = T)
-credit.train <- credit[train.index, ]
-credit.test <- credit[-train.index, ]
 
 str(credit)
-features <- c("gender", "own_car", "income_total", "own_realty", "cnt_kids", "income_total", "amt_credit", "educ_type", "family_status", "housing_type", "age_days", "occup_type", "ext_source_3", "days_last_phone_change", "years_last_phone_change", "age_years", "income_total_ln", "amt_credit_ln")
+features <- c("gender", "own_car", "own_realty", "cnt_kids", "income_total", "amt_credit", "educ_type", "family_status", "housing_type", "age_days", "occup_type", "ext_source_3", "days_last_phone_change", "years_last_phone_change", "age_years", "income_total_ln", "amt_credit_ln")
 x.train <- model.matrix( ~ . -1, data = credit.train[, features])
 x.test <- model.matrix( ~ . -1, data = credit.test[, features])
 
 y.train <- credit.train$target
 y.test <- credit.test$target
+y.test.num <- ifelse(y.test == "1", 1,0)
 
 log_r <- glmnet(x.train, y.train, alpha = 0, family = "binomial")
 log_r_cv <- cv.glmnet(x.train, y.train, alpha = 0,
@@ -215,3 +377,62 @@ pred.log_l <- predict(log_l, x.test, type = "response", s = log_l_cv$lambda.min)
 Accuracy(pred.log_l, y.test)
 ```
 
+## 6.5 Decision Tree
+
+```{r}
+features1 <- c("target", "gender", "own_car", "income_total", "own_realty", "cnt_kids", "amt_credit", "educ_type", "family_status", "housing_type", "occup_type", "ext_source_3", "years_last_phone_change", "age_years", "income_total_ln", "amt_credit_ln")
+dt <- rpart(target ~ ., 
+            data = credit.train[, features1],
+            method = "class",
+            parms = list(split = "information"),
+            model = T)
+pred.dt <- predict(dt, credit.test, type = "prob")[ ,2]
+Accuracy(pred.dt, y.test)
+```
+
+# 7. Evalution
+## 7.1 Introduce the user function Accuracy and Brier_Score
+
+```{r}
+Accuracy <- function(pred, real, threshold = 0.5){
+  predclass <- ifelse(pred > threshold, 1, 0)
+  acc <- sum(predclass == real) /length(real)
+  return(acc)
+}
+
+Brier_Score <- function(pred, real){
+  RMSE <- sqrt(mean((real - pred)^2))
+  return (RMSE)
+}
+```
+
+## 7.2 Evaluation with Accuracy
+
+```{r}
+alog1 <- Accuracy(pred.log1, credit$target)
+alog_r <- Accuracy(pred.log_r, y.test)
+alog_l <- Accuracy(pred.log_l, y.test)
+adt <- Accuracy(pred.dt, y.test)
+```
+
+## 7.3 Evaluation with Brier_Score
+
+```{r}
+bslog1 <- Brier_Score(pred.log1, y.test.num)
+bslog_r <- Brier_Score(pred.log_r, y.test.num)
+bslog_l <- Brier_Score(pred.log_l, y.test.num)
+bsdt <- Brier_Score(pred.dt, y.test.num)
+```
+
+## 7.4 Create a quality table
+```{r}
+
+Accuracy <- c(alog1, alog_r, alog_l, adt)
+Classification_error <- c(1-alog1, 1-alog_r, 1-alog_l, 1-adt)
+Brier_Score <- c(bslog1, bslog_r, bslog_l, bsdt)
+Quality_table <- data.frame(Accuracy, Classification_error, Brier_Score)
+row.names(Quality_table) <- c("log1", "log_r", "log_l", "dt")
+Quality_table
+```
+
+We can see from this table that the model we trained with the method logistic regression with lasso and decision tree are the best, because they have the highest accuracy and lowest Brier_Score.
